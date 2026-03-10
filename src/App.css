@@ -1,0 +1,408 @@
+:root {
+  --font-stack: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-stack);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: #f4f5f7;
+}
+
+.page {
+  --bg: #f4f5f7;
+  --panel: rgba(255, 255, 255, 0.94);
+  --panel-strong: #ffffff;
+  --border: rgba(15, 23, 42, 0.12);
+  --divider-soft: rgba(15, 23, 42, 0.075);
+  --text: #0f172a;
+  --muted: #5c667a;
+  --accent: #5b8def;
+  --accent-strong: #4b7fe8;
+  --bar-hover: color-mix(in oklab, var(--accent-strong) 12%, transparent 88%);
+  --bar-active-stroke: color-mix(in oklab, var(--accent-strong) 55%, black 45%);
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #ffffff 0%, #f4f5f7 55%, #eef1f6 100%);
+  color: var(--text);
+  padding: 16px 14px 18px;
+}
+
+.theme-dark {
+  --bg: #07090d;
+  --panel: rgba(13, 16, 23, 0.95);
+  --panel-strong: #0c0f15;
+  --border: rgba(255, 255, 255, 0.16);
+  --divider-soft: rgba(255, 255, 255, 0.1);
+  --text: #f4f7ff;
+  --muted: #aab2c5;
+  --accent: #ff8a65;
+  --accent-strong: #ff6b57;
+  --bar-hover: color-mix(in oklab, var(--accent-strong) 16%, transparent 84%);
+  --bar-active-stroke: color-mix(in oklab, var(--accent-strong) 68%, white 32%);
+  background: radial-gradient(circle at 8% -5%, #1b1010 0%, #0b0d12 38%, #07090d 100%);
+}
+
+.hero,
+.cards,
+.grid2 {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  font-size: 0.67rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.32rem, 2.6vw, 1.7rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.subhead {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.81rem;
+}
+
+.themeToggle {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.cards,
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  margin-bottom: 0;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+
+.cards + .grid2,
+.grid2 + .grid2 {
+  margin-top: 0;
+  border-top: 0;
+}
+
+.card {
+  border-radius: 0;
+  padding: 12px;
+  border: 0;
+  background: var(--panel-strong);
+  box-shadow: none;
+}
+
+h2 {
+  margin: 0 0 6px;
+  font-size: 0.83rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.big {
+  margin: 0 0 4px;
+  font-size: clamp(1.08rem, 2.2vw, 1.32rem);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.compactStat p,
+.compactStat li,
+p,
+li,
+small {
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+p {
+  margin: 2px 0;
+}
+
+small {
+  color: var(--muted);
+}
+
+ul {
+  margin: 4px 0 0;
+  padding-left: 14px;
+}
+
+li {
+  margin-bottom: 4px;
+  color: color-mix(in oklab, var(--text) 92%, var(--muted) 8%);
+}
+
+.subsScroll {
+  max-height: 250px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  padding: 6px;
+}
+
+.subsScroll details {
+  margin: 0;
+  padding: 0;
+}
+
+.subsScroll summary {
+  position: sticky;
+  top: 0;
+  background: var(--panel-strong);
+  padding: 4px 2px;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.subsScroll details ul,
+.subsScroll details p {
+  margin: 2px 0 0;
+}
+
+.anomalyListWrap {
+  max-height: 188px;
+  overflow: auto;
+  border: 1px solid var(--border);
+}
+
+.compactTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+.compactTable th,
+.compactTable td {
+  padding: 5px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.compactTable th {
+  position: sticky;
+  top: 0;
+  background: var(--panel-strong);
+  color: var(--muted);
+  z-index: 1;
+}
+
+.viewMoreBtn {
+  margin-top: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  padding: 4px 8px;
+  font-size: 0.73rem;
+  cursor: pointer;
+}
+
+.chartWrap {
+  width: 100%;
+  height: 210px;
+}
+
+.trendCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.trendChartWrap {
+  height: 100%;
+  min-height: 214px;
+  flex: 1;
+}
+
+.pieWrap {
+  min-height: 210px;
+}
+
+.legendList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  padding: 4px 6px;
+  border-radius: 0;
+  font-size: 0.76rem;
+  cursor: pointer;
+}
+
+.legendRow.active {
+  border-color: var(--accent-strong);
+  background: color-mix(in oklab, var(--accent-strong) 10%, transparent 90%);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.insightsSection .card:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.insightBlock {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 7px;
+  background: color-mix(in oklab, var(--panel) 88%, transparent 12%);
+}
+
+.insightBlock h3 {
+  margin: 0 0 4px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.insightBlock p {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.insightBlock strong {
+  font-weight: 800;
+  color: var(--text);
+}
+
+.sectionSplit {
+  margin-top: 10px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--border);
+}
+
+.segmented button {
+  border: 0;
+  border-right: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.73rem;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.segmented button:last-child {
+  border-right: 0;
+}
+
+.segmented button.active {
+  color: var(--text);
+  background: color-mix(in oklab, var(--accent-strong) 12%, transparent 88%);
+}
+
+.trendTooltip {
+  border: 1px solid var(--border);
+  background: var(--panel-strong);
+  padding: 6px 8px;
+  min-width: 160px;
+}
+
+.trendTooltipLabel {
+  margin: 0 0 2px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 650;
+}
+
+.trendTooltipValue,
+.trendTooltipDelta {
+  margin: 0;
+  font-size: 0.77rem;
+  color: var(--text);
+}
+
+.trendTooltipDelta.up {
+  color: color-mix(in oklab, #16a34a 78%, var(--text) 22%);
+}
+
+.trendTooltipDelta.down {
+  color: color-mix(in oklab, #dc2626 78%, var(--text) 22%);
+}
+
+.trendTooltipDelta.flat {
+  color: var(--muted);
+}
+
+.trendBarCell {
+  transition: fill 180ms ease, opacity 180ms ease, stroke 220ms ease;
+}
+
+@media (max-width: 720px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .chartWrap {
+    height: 196px;
+  }
+
+  .trendChartWrap {
+    min-height: 198px;
+  }
+
+  .pieWrap {
+    min-height: 198px;
+  }
+}
