@@ -18,7 +18,7 @@ import { loadDashboardData } from './dataLoader';
 const GOA_SHOPPING_BUDGET = 20000;
 const PIE_COLORS = ['#5B8DEF', '#6FD3C4', '#F59E8B', '#A78BFA', '#F6C453', '#63B3ED', '#F472B6', '#34D399'];
 
-const { expenses, subscriptions } = loadDashboardData();
+const { expenses, investments, subscriptions } = loadDashboardData();
 
 const latestDate = expenses
   .map((entry) => new Date(entry.date))
@@ -82,6 +82,32 @@ const weeklyAnomalyRows = [...allWeeklySeries]
 
 const activeSubs = subscriptions.filter((s) => /^active/.test(String(s.status).toLowerCase()));
 const cancelledSubs = subscriptions.filter((s) => String(s.status).toLowerCase().includes('cancel'));
+
+function latestByAccount(rows) {
+  const map = new Map();
+
+  rows.forEach((row) => {
+    const key = row.account || 'Unknown';
+    const dateValue = new Date(row.date || row.timestamp || 0).getTime();
+    const existing = map.get(key);
+    const existingDate = existing ? new Date(existing.date || existing.timestamp || 0).getTime() : -Infinity;
+
+    if (!existing || dateValue >= existingDate) {
+      map.set(key, row);
+    }
+  });
+
+  return [...map.values()];
+}
+
+const latestInvestmentRows = latestByAccount(investments);
+const investmentTotal = latestInvestmentRows.reduce((sum, row) => sum + row.amount_inr, 0);
+const fdTotal = latestInvestmentRows
+  .filter((row) => String(row.asset_type).toLowerCase() === 'fd')
+  .reduce((sum, row) => sum + row.amount_inr, 0);
+const stockTotal = latestInvestmentRows
+  .filter((row) => String(row.asset_type).toLowerCase().includes('stock'))
+  .reduce((sum, row) => sum + row.amount_inr, 0);
 
 function formatShortDate(dateString) {
   const d = new Date(dateString);
@@ -258,9 +284,6 @@ function App() {
     localStorage.setItem('expense-dashboard-theme', theme);
   }, [theme]);
 
-  useEffect(() => {
-    setActiveBarIndex(null);
-  }, [barView]);
 
   const pieLegendData = useMemo(
     () => categoryData.map((entry, index) => ({ ...entry, color: PIE_COLORS[index % PIE_COLORS.length] })),
@@ -321,6 +344,14 @@ function App() {
           </p>
           <p>Remaining: {formatCompactInr(Math.max(GOA_SHOPPING_BUDGET - goaSpent, 0))}</p>
           <small>Includes only rows with “goa”; excludes air fryer + accessories.</small>
+        </article>
+
+        <article className="card statCard compactStat">
+          <h2>Investments Snapshot</h2>
+          <p className="big">{formatCompactInr(investmentTotal)}</p>
+          <p>FD: {formatCompactInr(fdTotal)}</p>
+          <p>Stocks: {formatCompactInr(stockTotal)}</p>
+          <small>Based on latest entry per account from investments.csv.</small>
         </article>
 
         <article className="card statCard compactStat">
@@ -421,7 +452,7 @@ function App() {
                     setFocusedCategory((current) => (current === entry.category ? null : entry.category))
                   }
                 >
-                  {pieData.map((entry, index) => (
+                  {pieData.map((entry) => (
                     <Cell
                       key={entry.category}
                       fill={entry.color}
@@ -458,10 +489,22 @@ function App() {
           <div className="titleRow">
             <h2>Spending Trend</h2>
             <div className="segmented">
-              <button className={barView === 'weekly' ? 'active' : ''} onClick={() => setBarView('weekly')}>
+              <button
+                className={barView === 'weekly' ? 'active' : ''}
+                onClick={() => {
+                  setBarView('weekly');
+                  setActiveBarIndex(null);
+                }}
+              >
                 Weekly
               </button>
-              <button className={barView === 'monthly' ? 'active' : ''} onClick={() => setBarView('monthly')}>
+              <button
+                className={barView === 'monthly' ? 'active' : ''}
+                onClick={() => {
+                  setBarView('monthly');
+                  setActiveBarIndex(null);
+                }}
+              >
                 Monthly
               </button>
             </div>

@@ -56,3 +56,13 @@ timestamp,date,item,amount_inr,category,notes,source
 2026-03-09T18:01:00+05:30,2026-03-09,Goa shopping (2 shorts + 2 shirts),3957,Shopping,,manual-chat
 2026-03-09T18:07:00+05:30,2026-03-09,Shades replacement (Amazon Pay Later),998,Shopping,pay-later liability; to be paid post-Goa if possible else next month start,manual-chat
 2026-03-10T13:59:00+05:30,2026-03-10,Milk,24,Food,,manual-chat
+2026-03-11T09:10:00+05:30,2026-03-11,Groceries,559,Food,,manual-chat
+2026-03-11T11:38:00+05:30,2026-03-11,Rapido to work,129,Travel,,manual-chat
+2026-03-11T19:40:00+05:30,2026-03-11,Rapido to turf,67,Travel,,manual-chat
+2026-03-11T22:50:00+05:30,2026-03-11,Rapido to home,183,Travel,,manual-chat
+2026-03-11T21:00:16+05:30,2026-03-11,lunch,120,Food,,manual-chat
+2026-03-11T21:00:20+05:30,2026-03-11,coffee,40,Shopping,,manual-chat
+2026-03-11T21:00:20+05:30,2026-03-11,metro,50,Travel,,manual-chat
+2026-03-12T12:05:00+05:30,2026-03-12,Smart watch,2499,Shopping,,manual-chat
+2026-03-12T15:17:00+05:30,2026-03-12,Milk,24,Food,,manual-chat
+2026-03-12T15:46:00+05:30,2026-03-12,Smartwatch Gold subscription (yearly),149,Subscription,yearly plan,manual-chat
