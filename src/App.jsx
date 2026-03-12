@@ -246,6 +246,15 @@ function computeWeeklyInsights() {
 
 const weeklyInsights = computeWeeklyInsights();
 
+const goaUsagePct = GOA_SHOPPING_BUDGET ? (goaSpent / GOA_SHOPPING_BUDGET) * 100 : 0;
+const goaRisk = goaUsagePct >= 100 ? 'danger' : goaUsagePct >= 75 ? 'warning' : 'success';
+
+const recentWeek = dailySpendSeries.slice(-7);
+const previousWeek = dailySpendSeries.slice(-14, -7);
+const recentWeekAvg = recentWeek.length ? recentWeek.reduce((sum, row) => sum + row.total, 0) / recentWeek.length : 0;
+const previousWeekAvg = previousWeek.length ? previousWeek.reduce((sum, row) => sum + row.total, 0) / previousWeek.length : 0;
+const weeklyDeltaPct = previousWeekAvg ? ((recentWeekAvg - previousWeekAvg) / previousWeekAvg) * 100 : 0;
+
 function TrendTooltip({ active, payload }) {
   if (!active || !payload?.length) return null;
 
@@ -317,7 +326,9 @@ function App() {
               month: 'long',
               year: 'numeric',
             })}
+            {latestDate ? ` · As of ${formatShortDate(latestDate.toISOString().slice(0, 10))}` : ''}
           </p>
+          <p className="freshnessHint">Data refreshes from local CSV source files.</p>
         </div>
         <button
           className="themeToggle"
@@ -335,6 +346,11 @@ function App() {
           <p className="big">{formatCompactInr(mtdTotal)}</p>
           <p>Daily Life: {formatCompactInr(dailyLifeSpent)}</p>
           <p>Goa Shopping: {formatCompactInr(goaSpent)}</p>
+          {previousWeekAvg > 0 && (
+            <p className={`statusBadge ${weeklyDeltaPct > 0 ? 'danger' : 'success'}`}>
+              {weeklyDeltaPct > 0 ? '↑' : '↓'} Weekly avg vs prev week: {Math.abs(weeklyDeltaPct).toFixed(1)}%
+            </p>
+          )}
         </article>
 
         <article className="card statCard compactStat">
@@ -342,7 +358,16 @@ function App() {
           <p className="big">
             {formatCompactInr(goaSpent)} / {formatCompactInr(GOA_SHOPPING_BUDGET)}
           </p>
+          <div className="progressTrack" role="img" aria-label={`Goa budget used ${goaUsagePct.toFixed(0)} percent`}>
+            <div className={`progressFill ${goaRisk}`} style={{ width: `${Math.min(goaUsagePct, 100)}%` }} />
+            <span className="progressMarker marker50" aria-hidden="true" />
+            <span className="progressMarker marker75" aria-hidden="true" />
+          </div>
           <p>Remaining: {formatCompactInr(Math.max(GOA_SHOPPING_BUDGET - goaSpent, 0))}</p>
+          <p className={`statusBadge ${goaRisk}`}>
+            {goaRisk === 'danger' ? 'Over budget risk' : goaRisk === 'warning' ? 'Near budget cap' : 'Within budget'} ·{' '}
+            {goaUsagePct.toFixed(1)}% used
+          </p>
           <small>Includes only rows with “goa”; excludes air fryer + accessories.</small>
         </article>
 
@@ -361,14 +386,14 @@ function App() {
               <thead>
                 <tr>
                   <th>Week</th>
-                  <th>Spend</th>
+                  <th className="num">Spend</th>
                 </tr>
               </thead>
               <tbody>
                 {weeklyAnomalyRows.slice(0, anomalyVisibleCount).map((week) => (
                   <tr key={week.key}>
                     <td>{week.label}</td>
-                    <td>{formatCompactInr(week.total)}</td>
+                    <td className="num">{formatCompactInr(week.total)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -466,6 +491,8 @@ function App() {
               </PieChart>
             </ResponsiveContainer>
           </div>
+          <p className="chartHelper">Tap category to isolate · tap again to reset.</p>
+          {focusedCategory && <p className="filterState">Filter active: {focusedCategory}</p>}
           <div className="legendList">
             {pieLegendData.map((row) => (
               <button
@@ -491,6 +518,7 @@ function App() {
             <div className="segmented">
               <button
                 className={barView === 'weekly' ? 'active' : ''}
+                aria-pressed={barView === 'weekly'}
                 onClick={() => {
                   setBarView('weekly');
                   setActiveBarIndex(null);
@@ -500,6 +528,7 @@ function App() {
               </button>
               <button
                 className={barView === 'monthly' ? 'active' : ''}
+                aria-pressed={barView === 'monthly'}
                 onClick={() => {
                   setBarView('monthly');
                   setActiveBarIndex(null);
@@ -523,8 +552,8 @@ function App() {
                 }}
               >
                 <CartesianGrid strokeDasharray="2 2" opacity={0.14} vertical={false} />
-                <XAxis dataKey="label" tick={{ fontSize: 10 }} interval={0} tickMargin={2} height={24} />
-                <YAxis tickFormatter={(value) => formatCompactInr(value)} tick={{ fontSize: 10 }} width={58} />
+                <XAxis dataKey="label" tick={{ fontSize: 11 }} interval="preserveStartEnd" tickMargin={4} height={26} />
+                <YAxis tickFormatter={(value) => formatCompactInr(value)} tick={{ fontSize: 11 }} width={60} />
                 <Tooltip content={<TrendTooltip />} cursor={{ fill: 'var(--bar-hover)' }} />
                 <Bar
                   dataKey="total"

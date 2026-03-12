@@ -35,8 +35,8 @@ export default function middleware(request) {
     return;
   }
 
-  const expectedUser = process.env.BASIC_AUTH_USER;
-  const expectedPass = process.env.BASIC_AUTH_PASS;
+  const expectedUser = globalThis.process?.env?.BASIC_AUTH_USER;
+  const expectedPass = globalThis.process?.env?.BASIC_AUTH_PASS;
 
   if (!expectedUser || !expectedPass) {
     return new Response('Server is not configured for authentication.', {

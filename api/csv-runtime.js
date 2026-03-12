@@ -34,9 +34,9 @@ export default async function handler(request, response) {
 
   try {
     const [expenses, investments, subscriptions] = await Promise.all([
-      readFile(resolve(process.cwd(), 'src/data', DATA_FILES.expenses), 'utf8'),
-      readFile(resolve(process.cwd(), 'src/data', DATA_FILES.investments), 'utf8'),
-      readFile(resolve(process.cwd(), 'src/data', DATA_FILES.subscriptions), 'utf8'),
+      readFile(resolve(globalThis.process.cwd(), 'src/data', DATA_FILES.expenses), 'utf8'),
+      readFile(resolve(globalThis.process.cwd(), 'src/data', DATA_FILES.investments), 'utf8'),
+      readFile(resolve(globalThis.process.cwd(), 'src/data', DATA_FILES.subscriptions), 'utf8'),
     ]);
 
     return response.status(200).json({
