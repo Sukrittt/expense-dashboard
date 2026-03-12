@@ -247,7 +247,6 @@ function computeWeeklyInsights() {
 const weeklyInsights = computeWeeklyInsights();
 
 const goaUsagePct = GOA_SHOPPING_BUDGET ? (goaSpent / GOA_SHOPPING_BUDGET) * 100 : 0;
-const goaRisk = goaUsagePct >= 100 ? 'danger' : goaUsagePct >= 75 ? 'warning' : 'success';
 
 const recentWeek = dailySpendSeries.slice(-7);
 const previousWeek = dailySpendSeries.slice(-14, -7);
@@ -328,7 +327,6 @@ function App() {
             })}
             {latestDate ? ` · As of ${formatShortDate(latestDate.toISOString().slice(0, 10))}` : ''}
           </p>
-          <p className="freshnessHint">Data refreshes from local CSV source files.</p>
         </div>
         <button
           className="themeToggle"
@@ -347,9 +345,7 @@ function App() {
           <p>Daily Life: {formatCompactInr(dailyLifeSpent)}</p>
           <p>Goa Shopping: {formatCompactInr(goaSpent)}</p>
           {previousWeekAvg > 0 && (
-            <p className={`statusBadge ${weeklyDeltaPct > 0 ? 'danger' : 'success'}`}>
-              {weeklyDeltaPct > 0 ? '↑' : '↓'} Weekly avg vs prev week: {Math.abs(weeklyDeltaPct).toFixed(1)}%
-            </p>
+            <p className="mutedStat">Weekly avg vs prev week: {weeklyDeltaPct > 0 ? '+' : '-'}{Math.abs(weeklyDeltaPct).toFixed(1)}%</p>
           )}
         </article>
 
@@ -358,17 +354,8 @@ function App() {
           <p className="big">
             {formatCompactInr(goaSpent)} / {formatCompactInr(GOA_SHOPPING_BUDGET)}
           </p>
-          <div className="progressTrack" role="img" aria-label={`Goa budget used ${goaUsagePct.toFixed(0)} percent`}>
-            <div className={`progressFill ${goaRisk}`} style={{ width: `${Math.min(goaUsagePct, 100)}%` }} />
-            <span className="progressMarker marker50" aria-hidden="true" />
-            <span className="progressMarker marker75" aria-hidden="true" />
-          </div>
           <p>Remaining: {formatCompactInr(Math.max(GOA_SHOPPING_BUDGET - goaSpent, 0))}</p>
-          <p className={`statusBadge ${goaRisk}`}>
-            {goaRisk === 'danger' ? 'Over budget risk' : goaRisk === 'warning' ? 'Near budget cap' : 'Within budget'} ·{' '}
-            {goaUsagePct.toFixed(1)}% used
-          </p>
-          <small>Includes only rows with “goa”; excludes air fryer + accessories.</small>
+          <p className="mutedStat">Used: {goaUsagePct.toFixed(1)}%</p>
         </article>
 
         <article className="card statCard compactStat">
@@ -412,15 +399,11 @@ function App() {
           <h2>Weekly Review & Insights</h2>
           <div className="insightBlock">
             <h3>What went wrong this week</h3>
-            <p>
-              <strong>Issue snapshot:</strong> {weeklyInsights.wentWrong}
-            </p>
+            <p>{weeklyInsights.wentWrong}</p>
           </div>
           <div className="insightBlock">
             <h3>What to do next week</h3>
-            <p>
-              <strong>Next-week focus:</strong> {weeklyInsights.nextWeek}
-            </p>
+            <p>{weeklyInsights.nextWeek}</p>
           </div>
         </article>
 
@@ -491,7 +474,6 @@ function App() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <p className="chartHelper">Tap category to isolate · tap again to reset.</p>
           {focusedCategory && <p className="filterState">Filter active: {focusedCategory}</p>}
           <div className="legendList">
             {pieLegendData.map((row) => (

@@ -24,8 +24,8 @@ body {
   --muted: #4e5a70;
   --accent: #5b8def;
   --accent-strong: #4b7fe8;
-  --bar-hover: color-mix(in oklab, var(--accent-strong) 12%, transparent 88%);
-  --bar-active-stroke: color-mix(in oklab, var(--accent-strong) 55%, black 45%);
+  --bar-hover: color-mix(in oklab, var(--accent-strong) 8%, transparent 92%);
+  --bar-active-stroke: color-mix(in oklab, var(--accent-strong) 40%, black 60%);
   min-height: 100vh;
   background: radial-gradient(circle at top left, #ffffff 0%, #f4f5f7 55%, #eef1f6 100%);
   color: var(--text);
@@ -42,8 +42,8 @@ body {
   --muted: #c0c8db;
   --accent: #ff8a65;
   --accent-strong: #ff6b57;
-  --bar-hover: color-mix(in oklab, var(--accent-strong) 16%, transparent 84%);
-  --bar-active-stroke: color-mix(in oklab, var(--accent-strong) 68%, white 32%);
+  --bar-hover: color-mix(in oklab, var(--accent-strong) 10%, transparent 90%);
+  --bar-active-stroke: color-mix(in oklab, var(--accent-strong) 44%, white 56%);
   background: radial-gradient(circle at 8% -5%, #1b1010 0%, #0b0d12 38%, #07090d 100%);
 }
 
@@ -83,12 +83,6 @@ h1 {
   margin: 6px 0 0;
   color: var(--muted);
   font-size: 0.9rem;
-}
-
-.freshnessHint {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 0.82rem;
 }
 
 .themeToggle {
@@ -251,7 +245,7 @@ li {
 .themeToggle:hover,
 .segmented button:hover,
 .legendRow:hover {
-  background: color-mix(in oklab, var(--accent-strong) 8%, transparent 92%);
+  background: color-mix(in oklab, var(--text) 4%, transparent 96%);
 }
 
 .chartWrap {
@@ -336,11 +330,6 @@ li {
   font-size: 0.78rem;
 }
 
-.insightBlock strong {
-  font-weight: 800;
-  color: var(--text);
-}
-
 .sectionSplit {
   margin-top: 10px;
 }
@@ -414,8 +403,8 @@ li {
   transition: fill 180ms ease, opacity 180ms ease, stroke 220ms ease;
 }
 
-.chartHelper,
-.filterState {
+.filterState,
+.mutedStat {
   font-size: 0.82rem;
   color: var(--muted);
 }
@@ -425,73 +414,11 @@ li {
   font-weight: 600;
 }
 
-.statusBadge {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 6px;
-  padding: 2px 8px;
-  border: 1px solid var(--border);
-  font-size: 0.77rem;
-  font-weight: 600;
-}
-
-.statusBadge.success {
-  color: #15803d;
-  border-color: color-mix(in oklab, #15803d 45%, var(--border) 55%);
-}
-
-.statusBadge.warning {
-  color: #b45309;
-  border-color: color-mix(in oklab, #b45309 45%, var(--border) 55%);
-}
-
-.statusBadge.danger {
-  color: #b91c1c;
-  border-color: color-mix(in oklab, #b91c1c 45%, var(--border) 55%);
-}
-
-.progressTrack {
-  position: relative;
-  width: 100%;
-  height: 8px;
-  margin: 6px 0 8px;
-  background: color-mix(in oklab, var(--muted) 18%, transparent 82%);
-}
-
-.progressFill {
-  height: 100%;
-  background: #16a34a;
-}
-
-.progressFill.warning {
-  background: #d97706;
-}
-
-.progressFill.danger {
-  background: #dc2626;
-}
-
-.progressMarker {
-  position: absolute;
-  top: -1px;
-  width: 1px;
-  height: 10px;
-  background: color-mix(in oklab, var(--text) 35%, transparent 65%);
-}
-
-.progressMarker.marker50 {
-  left: 50%;
-}
-
-.progressMarker.marker75 {
-  left: 75%;
-}
-
 button:focus-visible,
 summary:focus-visible,
 .legendRow:focus-visible {
-  outline: 2px solid var(--accent-strong);
-  outline-offset: 2px;
+  outline: 1px solid color-mix(in oklab, var(--text) 35%, transparent 65%);
+  outline-offset: 1px;
 }
 
 @media (max-width: 720px) {
