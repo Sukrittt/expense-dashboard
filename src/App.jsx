@@ -4,6 +4,7 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
+  LabelList,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -307,9 +308,11 @@ function App() {
   const seriesByTime = useMemo(() => buildTimeSeries(expenses), []);
   const barData = useMemo(() => {
     const series = barView === 'weekly' ? seriesByTime.weekly : seriesByTime.monthly;
+    const maxTotal = Math.max(0, ...series.map((row) => row.total));
     return series.map((row, index) => ({
       ...row,
       delta: index === 0 ? null : row.total - series[index - 1].total,
+      normalized: maxTotal ? (row.total / maxTotal) * 100 : 0,
     }));
   }, [barView, seriesByTime]);
 
@@ -535,12 +538,13 @@ function App() {
               >
                 <CartesianGrid strokeDasharray="2 2" opacity={0.14} vertical={false} />
                 <XAxis dataKey="label" tick={{ fontSize: 11 }} interval="preserveStartEnd" tickMargin={4} height={26} />
-                <YAxis tickFormatter={(value) => formatCompactInr(value)} tick={{ fontSize: 11 }} width={60} />
+                <YAxis hide domain={[0, 100]} />
                 <Tooltip content={<TrendTooltip />} cursor={{ fill: 'var(--bar-hover)' }} />
                 <Bar
-                  dataKey="total"
+                  dataKey="normalized"
                   fill="var(--accent-strong)"
                   maxBarSize={32}
+                  minPointSize={6}
                   radius={[2, 2, 0, 0]}
                   isAnimationActive
                   animationDuration={380}
@@ -559,6 +563,7 @@ function App() {
                       />
                     );
                   })}
+                  <LabelList dataKey="total" position="top" formatter={(value) => inr(value)} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
